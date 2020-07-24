@@ -15,18 +15,40 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
-    $(function () {
+
         var socket = io();
+        $('.chatAndSee').css("display" , "none");
+
+        function setUsername(){
+            socket.emit('setUsername', $('#username').val());
+        }
+
+        var user;
+        socket.on('userExit', function(data){
+            $('#username_error').html(data);
+        });
+
+        socket.on('userSet', function(data){
+            user = data.username;
+            $('#username_error').html("Username set");
+            $('.chatAndSee').css("display" , "block");
+        });
+
         $('form').submit(function(e) {
-        e.preventDefault(); // prevents page reloading
-        socket.emit('chat message', $('#takemsg').val());
-        $('#takemsg').val('');
-        return false;
+            e.preventDefault(); // prevents page reloading
+            socket.emit('chat message', {message: $('#takemsg').val(), user:user});
+            $('#takemsg').val('');
+            return false;
         });
-        socket.on('chat message', function(msg){
-            $('#messages').append($('<li>').text(msg));
+
+        socket.on('newMsg', function(data){
+            if(user){
+                $('#messages').append($('<li>').text(data.user + ' : ' + data.message));
+            }
         });
-    });
+        socket.on('broadcast', function(data){
+            $('#totalActive').html(data.description);
+        });
     </script>
 
 </body>
