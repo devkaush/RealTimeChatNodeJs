@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatiyana</title>
+    <link rel="stylesheet" href="stylesheets/main.css">
+</head>
+<body>
+
+    <%- include('../partials/header.ejs') %>
+    <%- include('../partials/errorMessage.ejs') %>
+    <%- body %>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+    $(function () {
+        var socket = io();
+        $('form').submit(function(e) {
+        e.preventDefault(); // prevents page reloading
+        socket.emit('chat message', $('#takemsg').val());
+        $('#takemsg').val('');
+        return false;
+        });
+        socket.on('chat message', function(msg){
+            $('#messages').append($('<li>').text(msg));
+        });
+    });
+    </script>
+
+</body>
+</html>

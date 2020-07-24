@@ -1,0 +1,44 @@
+.chatAndSee{
+    border:1px solid blue;
+    margin:auto;
+    height:500px;
+    width:70%;
+    margin-top: 80px;
+}
+.chatSection{
+    height:100%;
+    width:59%;
+    padding-left:1%;
+    float:left;
+}
+.showMsg{
+    height:420px;
+    padding:10px;
+}
+.constructMsg input{
+    width:84%;
+    height:50px;
+    padding:0px;
+    margin:0px;
+    font-size:15px;
+    padding-left:1%;
+}
+.constructMsg button{
+    width:13%;
+    height:54px;
+    margin:0px;
+    font-size:15px;
+}
+input:focus{
+    outline: none;
+}
+
+.SeeActiveSection{
+    border-left: 1px solid blue;
+    float:left;
+    height:95%;
+    width:35%;
+    margin-left:1%;
+    margin-top:1.2%;
+    padding-left:3%;
+}
