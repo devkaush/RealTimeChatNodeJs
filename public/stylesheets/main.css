@@ -14,6 +14,7 @@
 .showMsg{
     height:420px;
     padding:10px;
+    overflow-y: scroll;
 }
 .constructMsg input{
     width:84%;

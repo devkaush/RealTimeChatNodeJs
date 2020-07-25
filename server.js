@@ -19,16 +19,21 @@ app.use('/', indexRouter)
 var server = app.listen(process.env.PORT || 3000)
 var io = require('socket.io')(server)
 
-var clients = 0
-users = []
+var clients
+const users = {}
+allusers = []
 io.on('connection', (socket) => {
-    clients++
+    //clients++
     //console.log('a user connected')
-    io.sockets.emit('broadcast',{ description: clients + ' friends connected!'})
+    //io.sockets.emit('broadcast',{ description: clients + ' of your friends are connected yet!'})
 
     socket.on('setUsername', function(data){
-        if(users.indexOf(data) < 0){
-            users.push(data)
+        if(allusers.indexOf(data) < 0){
+            allusers.push(data)
+            //clients++
+            users[socket.id] = data
+            clients = io.engine.clientsCount
+            io.sockets.emit('broadcast',{ description: clients + ' of your friends are connected yet!', allUsers: users})
             socket.emit('userSet', {username:data})
         }else{
             socket.emit('userExit', data + ' username is taken! Try some other username.')
@@ -36,11 +41,13 @@ io.on('connection', (socket) => {
     })
 
     socket.on('chat message', (data) => {
-        io.emit('newMsg', data)
+        socket.broadcast.emit('newMsg', data)
     })
     socket.on('disconnect', () => {
         //console.log('user disconnected')
-        clients--
-        io.sockets.emit('broadcast',{ description: clients + ' friends connected!'});
+        //clients--
+        clients = io.engine.clientsCount
+        delete users[socket.id]
+        io.sockets.emit('broadcast',{ description: clients + ' of your friends are connected yet!', allUsers: users});
     })
 })

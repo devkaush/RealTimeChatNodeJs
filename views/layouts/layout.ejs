@@ -30,13 +30,15 @@
 
         socket.on('userSet', function(data){
             user = data.username;
-            $('#username_error').html("Username set");
+            $('#username_error').html("Username " + user +" is set");
             $('.chatAndSee').css("display" , "block");
+            $('#messages').append($('<li>').text("Hey " + data.username + " welcome to the chat room"));
         });
 
         $('form').submit(function(e) {
             e.preventDefault(); // prevents page reloading
             socket.emit('chat message', {message: $('#takemsg').val(), user:user});
+            $('#messages').append($('<li>').text('You : ' + $('#takemsg').val()));
             $('#takemsg').val('');
             return false;
         });
@@ -44,10 +46,19 @@
         socket.on('newMsg', function(data){
             if(user){
                 $('#messages').append($('<li>').text(data.user + ' : ' + data.message));
+                //scrollHeight =420;
+                //$('#showMsg').scrollTop($('#showMsg').height());
             }
         });
         socket.on('broadcast', function(data){
             $('#totalActive').html(data.description);
+            $('#allusers').empty();
+            $.each(data.allUsers, function(key, value){
+                $('#allusers').append($('<li>').text(value));
+            });
+            //for(var i=0; i<data.allUsers.length; i++){
+            //    $('#allusers').append($('<li>').text(data.allUsers[i][1]));
+            //}
         });
     </script>
 
