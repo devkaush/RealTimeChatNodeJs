@@ -1,45 +1,98 @@
-.chatAndSee{
-    border:1px solid blue;
+body{
+    background-color: #41A4F3; 
+    font-family: "Helvetica";
+    color:white;
+}
+header{
+    border-bottom:1px solid white;
+    border-radius: 50%;
+    text-align:center;
+    padding:20px;
+}
+header a{
+    text-decoration:none;
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+}
+.setUsername{
     margin:auto;
-    height:500px;
-    width:70%;
+    height:100px;
+    max-width:600px;
     margin-top: 80px;
+    padding:20px;
+    background-color: white;
+    border-radius: 20px;
+    text-align:center;
 }
-.chatSection{
-    height:100%;
-    width:59%;
-    padding-left:1%;
-    float:left;
-}
-.showMsg{
-    height:420px;
-    padding:10px;
-    overflow-y: scroll;
-}
-.constructMsg input{
-    width:84%;
-    height:50px;
+input{
+    height:38px;
     padding:0px;
     margin:0px;
-    font-size:15px;
-    padding-left:1%;
+    font-size:12px;
+    padding-left:20px;
+    border:none;
+    border:1px solid #bfbfbf;
+    border-radius: 20px;
 }
-.constructMsg button{
-    width:13%;
-    height:54px;
+button{
+    width:20%;
+    height:40px;
     margin:0px;
-    font-size:15px;
+    font-size:12px;
+    border:none;
+    border-radius: 20px;
+    background-color: #41A4F3;
+    color:white;
+}
+.setUsername input{
+    width:75%;
+    margin-bottom:30px;
+}
+#joinedAs{
+    text-align:center;
+    font-size:20px;
+    font-weight: 100;
+}
+.chatSection{
+    margin:auto;
+    height:450px;
+    max-width:600px;
+    margin-top: 30px;
+    padding:20px;
+    background-color: white;
+    border-radius: 20px;
+}
+.showMsg{
+    height:390px;
+    overflow-y: scroll;
+    margin-bottom:20px;
+}
+.showMsg p{
+    margin:0px;
+    clear:both;
+    max-width:250px;
+    padding:10px;
+    border-radius: 20px;
+    margin-bottom:3px;
+    font-size:14px;
+}
+.recieveMsg{
+    float:left;
+    color:#404040;
+    background-color: #f2f2f2;
+}
+.sentMsg{
+    float:right;
+    color:white;
+    background-color: #41A4F3;
+}
+.constructMsg input{
+    width:75%;
 }
 input:focus{
     outline: none;
 }
-
-.SeeActiveSection{
-    border-left: 1px solid blue;
-    float:left;
-    height:95%;
-    width:35%;
-    margin-left:1%;
-    margin-top:1.2%;
-    padding-left:3%;
+button:focus{
+    outline: none;
 }

@@ -17,7 +17,7 @@
     <script>
 
         var socket = io();
-        $('.chatAndSee').css("display" , "none");
+        $('.chatSection').css("display" , "none");
 
         function setUsername(){
             socket.emit('setUsername', $('#username').val());
@@ -30,36 +30,46 @@
 
         socket.on('userSet', function(data){
             user = data.username;
-            $('#username_error').html("Username " + user +" is set");
-            $('.chatAndSee').css("display" , "block");
-            $('#messages').append($('<li>').text("Hey " + data.username + " welcome to the chat room"));
+            $('#joinedAs').html("Joined as " + user);
+            $('.chatSection').css("display" , "block");
+            $('.setUsername').css("display" , "none");
+            $('.showMsg').append("<p class='recieveMsg'>Hey " + data.username + " welcome to the chat room</p>");
+        });
+
+        socket.on('newUserJoined', function(data){
+            $('.showMsg').append("<p class='recieveMsg'>" + data + " joined the chat group</p>");
+            //$('#showMsg').append($('<p class="recieveMsg">').text(data + ' joined the chat group'));
+        });
+        socket.on('UserLeft', function(data){
+            $('.showMsg').append("<p class='recieveMsg'>" + data + " left the chat group</p>");
+            //$('#showMsg').append($('<p class="recieveMsg">').text(data + ' left the chat group'));
         });
 
         $('form').submit(function(e) {
             e.preventDefault(); // prevents page reloading
             socket.emit('chat message', {message: $('#takemsg').val(), user:user});
-            $('#messages').append($('<li>').text('You : ' + $('#takemsg').val()));
+            $('.showMsg').append("<p class='sentMsg'>" + $('#takemsg').val() + "</p>");
+            //$('#showMsg').append($('<p class="sentMsg">').text('You : ' + $('#takemsg').val()));
             $('#takemsg').val('');
             return false;
         });
 
         socket.on('newMsg', function(data){
             if(user){
-                $('#messages').append($('<li>').text(data.user + ' : ' + data.message));
-                //scrollHeight =420;
-                //$('#showMsg').scrollTop($('#showMsg').height());
+                $('.showMsg').append("<p class='recieveMsg'>" + data.user + " : " + data.message + "</p>");
+                //$('#showMsg').append($('<p class="recieveMsg">').text(data.user + ' : ' + data.message));
             }
         });
-        socket.on('broadcast', function(data){
-            $('#totalActive').html(data.description);
-            $('#allusers').empty();
-            $.each(data.allUsers, function(key, value){
-                $('#allusers').append($('<li>').text(value));
-            });
+        //socket.on('broadcast', function(data){
+        //    $('#totalActive').html(data.description);
+        //    $('#allusers').empty();
+        //    $.each(data.allUsers, function(key, value){
+        //        $('#allusers').append($('<li>').text(value));
+        //    });
             //for(var i=0; i<data.allUsers.length; i++){
             //    $('#allusers').append($('<li>').text(data.allUsers[i][1]));
             //}
-        });
+        //});
     </script>
 
 </body>
