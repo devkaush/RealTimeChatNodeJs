@@ -96,3 +96,46 @@ input:focus{
 button:focus{
     outline: none;
 }
+@media (max-width: 500px){
+    header{
+        padding:5px;
+    }
+    header a{
+        font-size:20px;
+    }
+    button{
+        width:50%;
+    }
+    .setUsername input{
+        width:90%;
+    }
+    #joinedAs{
+        font-size:12px;
+    }
+    .chatSection{
+        height:400px;
+        margin-top: 15px;
+        padding:10px;
+    }
+    .showMsg{
+        height:350px;
+        margin-bottom:10px;
+    }
+    .showMsg p{
+        font-size:12px;
+    }
+    .constructMsg input{
+        width:65%;
+    }
+    .constructMsg button{
+        width:25%;
+    }
+}
+@media (max-width: 300px){
+    .constructMsg input{
+        width:60%;
+    }
+    .constructMsg button{
+        width:20%;
+    }
+}
