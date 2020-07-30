@@ -1,0 +1,27 @@
+<script>
+    const roomName = "<%= roomName %>"
+</script>
+<div class="setUsername">
+    <input type="text" placeholder="Enter Your Name" id="username" required><br>
+    <button onclick="setUsername()">Let me chat!</button>
+    <p id="username_error"></p>
+</div>
+<h2 id="joinedAs"></h2>
+<div class="chatSection">
+    <div class="showMsg">
+        
+        
+    </div>
+    <div class="constructMsg">
+        <input type="text" name="mesg" id="takemsg" autocomplete="off" placeholder="Send a message">
+        <button onclick="getandsendmsg()">Send</button>
+    </div>
+</div>
+    <!--
+    <div class="SeeActiveSection">
+        <p id="totalActive"></p>
+        <ul id="allusers">
+            
+        </ul>
+    </div>
+    -->

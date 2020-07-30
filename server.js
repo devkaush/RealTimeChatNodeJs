@@ -5,46 +5,64 @@ const bodayParser = require('body-parser')
 //var http = require('http').createServer(app)
 //var io = require('socket.io')(http)
 
-const indexRouter = require('./routes/index')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
-app.use(bodayParser.urlencoded({ limit:'10mb', extended:false}))
+app.use(bodayParser.urlencoded({ extended:true}))
 
-app.use('/', indexRouter)
+const rooms = {}
+
+app.get('/', (req, res) => {
+    res.render('index', { rooms: rooms })
+})
+  
+app.post('/room', (req, res) => {
+    if (rooms[req.body.room] != null) {
+        return res.redirect('/')
+    }
+    rooms[req.body.room] = { users: {} }
+    res.redirect(req.body.room)
+    // Send message that new room was created
+    io.emit('room-created', req.body.room)
+})
+
+app.get('/:room', (req, res) => {
+    if (rooms[req.params.room] == null) {
+      return res.redirect('/')
+    }
+    res.render('room', { roomName: req.params.room })
+})
 
 var server = app.listen(process.env.PORT || 3000)
 var io = require('socket.io')(server)
 
-//var clients
-const users = {}
-allusers = []
+
 io.on('connection', (socket) => {
     
-    socket.on('setUsername', function(data){
-        if(allusers.indexOf(data) < 0){
-            allusers.push(data)
-            //clients++
-            users[socket.id] = data
-            //clients = io.engine.clientsCount
-            //io.sockets.emit('broadcast',{ description: clients + ' of your friends are connected yet!', allUsers: users})
-            socket.broadcast.emit('newUserJoined',data)
-            socket.emit('userSet', {username:data})
-        }else{
-            socket.emit('userExit', data + ' username is taken! Try some other username.')
-        }
+    socket.on('setUsername', function(room, name){
+        socket.join(room)
+        rooms[room].users[socket.id] = name
+        socket.to(room).broadcast.emit('newUserJoined', name)
+        socket.emit('userSet', {username:name})
     })
 
-    socket.on('chat message', (data) => {
-        socket.broadcast.emit('newMsg', data)
+    socket.on('chat message', (room, message) => {
+        socket.to(room).broadcast.emit('newMsg', { message: message, name: rooms[room].users[socket.id] })
     })
     socket.on('disconnect', () => {
-        //clients = io.engine.clientsCount
-        socket.broadcast.emit('UserLeft', users[socket.id])
-        delete users[socket.id]
-        //io.sockets.emit('broadcast',{ description: clients + ' of your friends are connected yet!', allUsers: users});
+        getUserRooms(socket).forEach(room => {
+            socket.to(room).broadcast.emit('UserLeft', rooms[room].users[socket.id])
+            delete rooms[room].users[socket.id]
+        })
     })
 })
+
+function getUserRooms(socket) {
+    return Object.entries(rooms).reduce((names, [name, room]) => {
+      if (room.users[socket.id] != null) names.push(name)
+      return names
+    }, [])
+  }
