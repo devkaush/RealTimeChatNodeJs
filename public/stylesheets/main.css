@@ -35,9 +35,9 @@ header a{
     margin-bottom:30px;
 }
 #room-container p{
+    margin:0px;
     margin-top:10px;
     color:#41A4F3;
-    margin:0px;
 }
 .createRoomBox h4{
     color:#41A4F3;
@@ -115,6 +115,7 @@ button{
     color:white;
     background-color: #41A4F3;
 }
+
 .constructMsg input{
     width:75%;
 }

@@ -49,6 +49,13 @@ io.on('connection', (socket) => {
         socket.emit('userSet', {username:name})
     })
 
+    socket.on('someoneTyping', (room) => {
+        socket.to(room).broadcast.emit('xIsTyping', { name: rooms[room].users[socket.id] })
+    })
+    socket.on('someoneNotTyping', (room) => {
+        socket.to(room).broadcast.emit('xIsNotTyping', { name: rooms[room].users[socket.id] })
+    })
+
     socket.on('chat message', (room, message) => {
         socket.to(room).broadcast.emit('newMsg', { message: message, name: rooms[room].users[socket.id] })
     })
