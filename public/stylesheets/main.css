@@ -3,6 +3,7 @@ body{
     font-family: "Helvetica";
     color:white;
 }
+
 a{
     text-decoration:none;
 }
@@ -63,6 +64,7 @@ input{
     border-radius: 20px;
 }
 button{
+    cursor: pointer;
     width:20%;
     height:40px;
     margin:0px;
@@ -92,8 +94,9 @@ button{
     border-radius: 20px;
 }
 .showMsg{
-    height:390px;
     overflow-y: scroll;
+    scrollbar-width: thin; 
+    height:390px;
     margin-bottom:20px;
 }
 .showMsg p{

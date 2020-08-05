@@ -11,20 +11,20 @@ function timeoutFunction(){
     socket.emit('someoneNotTyping', roomName);
 }
 
-$('#takemsg').keypress(function(e){
-    if(e.which != 13){
-        if(typing == false){
-            typing = true;
-            socket.emit('someoneTyping', roomName);
-            clearTimeout(timeout);
-            timeout = setTimeout(timeoutFunction, 4000);
-        }else{
-            clearTimeout(timeout);
-            timeout = setTimeout(timeoutFunction, 4000);
-        }
+function showTyping(){
+    if(typing == false){
+        typing = true;
+        socket.emit('someoneTyping', roomName);
+        clearTimeout(timeout);
+        timeout = setTimeout(timeoutFunction, 4000);
     }else{
-        getandsendmsg();
+        clearTimeout(timeout);
+        timeout = setTimeout(timeoutFunction, 4000);
     }
+}
+
+$('#takemsg').keypress(function(e){
+    if(e.which == 13) getandsendmsg();
 });
 socket.on('xIsTyping', function(data){
     $('.showMsg').append("<p class='recieveMsg showTyping'>" + data.name + " is typing....</p>");
