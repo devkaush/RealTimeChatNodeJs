@@ -28,9 +28,11 @@ $('#takemsg').keypress(function(e){
 });
 socket.on('xIsTyping', function(data){
     $('.showMsg').append("<p class='recieveMsg showTyping'>" + data.name + " is typing....</p>");
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 });
 socket.on('xIsNotTyping', function(data){
     $('.showTyping').remove();
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 });
 
 
@@ -40,22 +42,23 @@ socket.on('userSet', function(data){
     $('.chatSection').css("display" , "block");
     $('.setUsername').css("display" , "none");
     $('.showMsg').append("<p class='recieveMsg'>Hey " + data.username + " welcome to the chat room</p>");
-    
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 });
 
 socket.on('newUserJoined', function(data){
     $('.showMsg').append("<p class='recieveMsg'>" + data + " joined the chat group</p>");
-    //$('#showMsg').append($('<p class="recieveMsg">').text(data + ' joined the chat group'));
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 });
 socket.on('UserLeft', function(data){
     $('.showMsg').append("<p class='recieveMsg'>" + data + " left the chat group</p>");
-    //$('#showMsg').append($('<p class="recieveMsg">').text(data + ' left the chat group'));
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 });
 
 function getandsendmsg(){
     socket.emit('chat message', roomName, $('#takemsg').val());
     $('.showMsg').append("<p class='sentMsg'>" + $('#takemsg').val() + "</p>");
     $('#takemsg').val('');
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 }
 
 socket.on('room-created', room => {
@@ -72,6 +75,7 @@ socket.on('room-created', room => {
 socket.on('newMsg', function(data){
     $('.showTyping').remove();
     $('.showMsg').append("<p class='recieveMsg'>" + data.name + " : " + data.message + "</p>");
+    $('.showMsg').stop().animate({ scrollTop: $('.showMsg')[0].scrollHeight}, 1000);
 });
 //socket.on('broadcast', function(data){
 //    $('#totalActive').html(data.description);
